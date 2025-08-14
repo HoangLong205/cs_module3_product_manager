@@ -76,6 +76,17 @@ public class ProductDAO {
         }
     }
 
+    public void deleteProduct(int id) {
+        String sql = "DELETE FROM products WHERE id=?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
     public Product getByIdProduct(int id) {
         Product product = null;
         String sql = "SELECT p.*, c.name as category_name FROM products p JOIN categories c ON p.category_id = c.id WHERE p.id = ?";

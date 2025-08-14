@@ -46,6 +46,12 @@ public class ProductController extends HttpServlet {
                 request.setAttribute("categories", categoryDAO.getAllCategory());
                 request.getRequestDispatcher("/WEB-INF/product-form.jsp").forward(request, response);
                 break;
+            case "delete":
+                int idDelete = Integer.parseInt(request.getParameter("id"));
+                System.out.println("🗑 Xóa product ID = " + idDelete);
+                productDAO.deleteProduct(idDelete);
+                response.sendRedirect("products");
+                break;
             default:
                 System.out.println("📋 Lấy danh sách product");
                 request.setAttribute("products", productDAO.getAllProduct());
