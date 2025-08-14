@@ -10,7 +10,7 @@ import static org.example.product_manager_java.utils.DBConnection.getConnection;
 
 public class CategoryDAO {
 
-    public List<Category> getAll() {
+    public List<Category> getAllCategory() {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM categories";
         try (Connection con = getConnection();
@@ -24,6 +24,18 @@ public class CategoryDAO {
         }
         return list;
     }
+
+    public void insertCategory(Category c) {
+        String sql = "INSERT INTO categories (name) VALUES (?)";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, c.getName());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
 
 
     private void printSQLException(SQLException ex) {

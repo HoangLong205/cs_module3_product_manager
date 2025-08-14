@@ -40,11 +40,22 @@ public class CategoryController extends HttpServlet {
 
             default:
                 System.out.println("📋 Lấy danh sách category");
-                request.setAttribute("list", dao.getAll());
+                request.setAttribute("list", dao.getAllCategory());
                 request.getRequestDispatcher("/WEB-INF/category-list.jsp").forward(request, response);
                 break;
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
 
+        if (id == null || id.isEmpty()) {
+            System.out.println("➕ Thêm mới category: " + name);
+            dao.insertCategory(new Category(name));
+        }
+
+        response.sendRedirect("categories");
+    }
 }
