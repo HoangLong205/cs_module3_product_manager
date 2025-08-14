@@ -56,6 +56,55 @@ public class ProductDAO {
         }
     }
 
+    public void updateProduct(Product product) {
+        String sql = "UPDATE products SET name = ?, price = ?, quantity = ?, image = ?, description = ?, category_id = ? WHERE id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, product.getName());
+            ps.setDouble(2, product.getPrice());
+            ps.setInt(3, product.getQuantity());
+            ps.setString(4, product.getImage());
+            ps.setString(5, product.getDescription());
+            ps.setInt(6, product.getCategory().getId());
+            ps.setInt(7, product.getId());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public Product getByIdProduct(int id) {
+        Product product = null;
+        String sql = "SELECT p.*, c.name as category_name FROM products p JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    product = new Product();
+                    product.setId(rs.getInt("id"));
+                    product.setName(rs.getString("name"));
+                    product.setPrice(rs.getDouble("price"));
+                    product.setQuantity(rs.getInt("quantity"));
+                    product.setImage(rs.getString("image"));
+                    product.setDescription(rs.getString("description"));
+                    Category category = new Category();
+                    category.setId(rs.getInt("category_id"));
+                    category.setName(rs.getString("category_name"));
+                    product.setCategory(category);
+                }
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return product;
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {

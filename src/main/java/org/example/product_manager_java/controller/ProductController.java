@@ -39,6 +39,13 @@ public class ProductController extends HttpServlet {
                 request.setAttribute("categories", categoryDAO.getAllCategory());
                 request.getRequestDispatcher("/WEB-INF/product-form.jsp").forward(request, response);
                 break;
+            case "edit":
+                int id = Integer.parseInt(request.getParameter("id"));
+                Product product = productDAO.getByIdProduct(id);
+                request.setAttribute("product", product);
+                request.setAttribute("categories", categoryDAO.getAllCategory());
+                request.getRequestDispatcher("/WEB-INF/product-form.jsp").forward(request, response);
+                break;
             default:
                 System.out.println("📋 Lấy danh sách product");
                 request.setAttribute("products", productDAO.getAllProduct());
@@ -64,8 +71,12 @@ public class ProductController extends HttpServlet {
 
         if (idStr == null || idStr.isEmpty()) {
             productDAO.insertProduct(product);
-            System.out.println("Thêm sản phẩm thất bại!");
+            System.out.println("Thêm sản phẩm thành công!");
+        }else {
+            product.setId(Integer.parseInt(idStr));
+            productDAO.updateProduct(product);
         }
+
 
         response.sendRedirect("products");
     }
