@@ -20,7 +20,7 @@
         </label>
     </div>
     <div class="col-auto">
-        <input type="submit" value="Search"/>
+        <input type="submit" value="Tìm kiếm"/>
     </div>
 </form>
 

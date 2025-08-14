@@ -37,6 +37,7 @@
             <td><img src="${product.image}" width="80" alt=""></td>
             <td>${product.category.name}</td>
             <td>
+                <a href="products?action=view&id=${product.id}" class="btn btn-info btn-sm">Xem chi tiết</a>
                 <a href="products?action=edit&id=${product.id}" class="btn btn-warning btn-sm">Sửa</a>
                 <a href="products?action=delete&id=${product.id}" class="btn btn-danger btn-sm"
                    onclick="return confirm('Xóa sản phẩm này?')">Xóa</a>

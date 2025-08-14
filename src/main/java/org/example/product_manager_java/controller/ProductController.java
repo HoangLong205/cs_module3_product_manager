@@ -41,6 +41,11 @@ public class ProductController extends HttpServlet {
         if (action == null) action = "list";
         System.out.println("🛠 [GET] Action = " + action);
         switch (action) {
+            case "view":
+                int idView = Integer.parseInt(request.getParameter("id"));
+                Product productView = productDAO.getByIdProduct(idView);
+                request.setAttribute("product", productView);
+                request.getRequestDispatcher("/WEB-INF/product-detail.jsp").forward(request, response);
             case "new":
                 System.out.println("➡ Mở form thêm mới product");
                 request.setAttribute("categories", categoryDAO.getAllCategory());
