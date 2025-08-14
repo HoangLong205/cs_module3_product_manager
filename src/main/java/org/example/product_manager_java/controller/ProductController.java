@@ -36,6 +36,7 @@ public class ProductController extends HttpServlet {
         switch (action) {
             case "new":
                 System.out.println("➡ Mở form thêm mới product");
+                request.setAttribute("categories", categoryDAO.getAllCategory());
                 request.getRequestDispatcher("/WEB-INF/product-form.jsp").forward(request, response);
                 break;
             default:
@@ -62,9 +63,8 @@ public class ProductController extends HttpServlet {
         product.setCategory(category);
 
         if (idStr == null || idStr.isEmpty()) {
-            if (!productDAO.insertProduct(product)) {
-                System.out.println("Thêm sản phẩm thất bại!");
-            }
+            productDAO.insertProduct(product);
+            System.out.println("Thêm sản phẩm thất bại!");
         }
 
         response.sendRedirect("products");

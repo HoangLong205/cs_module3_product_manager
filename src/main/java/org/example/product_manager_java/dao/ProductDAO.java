@@ -40,8 +40,8 @@ public class ProductDAO {
         return list;
     }
 
-    public boolean insertProduct(Product p) {
-        String sql = "INSERT INTO product (name,price,quantity,image,description,category_id) VALUES(?,?,?,?,?,?)";
+    public void insertProduct(Product p) {
+        String sql = "INSERT INTO products (name,price,quantity,image,description,category_id) VALUES(?,?,?,?,?,?)";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, p.getName());
@@ -50,13 +50,10 @@ public class ProductDAO {
             ps.setString(4, p.getImage());
             ps.setString(5, p.getDescription());
             ps.setInt(6, p.getCategory().getId());
-            boolean rs = ps.executeUpdate() > 0;
-            System.out.println("[DAO] insert() => " + (rs ? "Thành công" : "Thất bại"));
-            return rs;
+            ps.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
         }
-        return false;
     }
 
     private void printSQLException(SQLException ex) {
