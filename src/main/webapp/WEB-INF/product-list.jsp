@@ -18,17 +18,17 @@
     <th>Danh mục</th>
     <th>Hành động</th>
   </tr>
-  <c:forEach var="p" items="${list}">
+  <c:forEach var="product" items="${products}">
     <tr>
-      <td>${p.id}</td>
-      <td>${p.name}</td>
-      <td>${p.price}</td>
-      <td>${p.quantity}</td>
-      <td><img src="${p.image}" width="80"></td>
-      <td>${p.categoryId}</td>
+      <td>${product.id}</td>
+      <td>${product.name}</td>
+      <td>${product.price}</td>
+      <td>${product.quantity}</td>
+      <td><img src="${product.image}" width="80" alt=""></td>
+      <td>${product.category.name}</td>
       <td>
-        <a href="products?action=edit&id=${p.id}" class="btn btn-warning btn-sm">Sửa</a>
-        <a href="products?action=delete&id=${p.id}" class="btn btn-danger btn-sm"
+        <a href="products?action=edit&id=${product.id}" class="btn btn-warning btn-sm">Sửa</a>
+        <a href="products?action=delete&id=${product.id}" class="btn btn-danger btn-sm"
            onclick="return confirm('Xóa sản phẩm này?')">Xóa</a>
       </td>
     </tr>

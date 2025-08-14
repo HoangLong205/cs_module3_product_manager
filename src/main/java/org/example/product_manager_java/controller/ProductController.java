@@ -3,6 +3,7 @@ package org.example.product_manager_java.controller;
 import org.example.product_manager_java.dao.CategoryDAO;
 import org.example.product_manager_java.dao.ProductDAO;
 import org.example.product_manager_java.model.Category;
+import org.example.product_manager_java.model.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,9 +40,33 @@ public class ProductController extends HttpServlet {
                 break;
             default:
                 System.out.println("📋 Lấy danh sách product");
-                request.setAttribute("list", productDAO.getAllProduct());
+                request.setAttribute("products", productDAO.getAllProduct());
                 request.getRequestDispatcher("/WEB-INF/product-list.jsp").forward(request, response);
                 break;
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        int categoryId = Integer.parseInt(request.getParameter("category_id"));
+        Category category = categoryDAO.getByIdCategory(categoryId);
+
+        String idStr = request.getParameter("id");
+        Product product = new Product();
+        product.setName(request.getParameter("name"));
+        product.setPrice(Double.parseDouble(request.getParameter("price")));
+        product.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+        product.setImage(request.getParameter("image"));
+        product.setDescription(request.getParameter("description"));
+        product.setCategory(category);
+
+        if (idStr == null || idStr.isEmpty()) {
+            if (!productDAO.insertProduct(product)) {
+                System.out.println("Thêm sản phẩm thất bại!");
+            }
+        }
+
+        response.sendRedirect("products");
     }
 }

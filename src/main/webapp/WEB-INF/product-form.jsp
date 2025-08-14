@@ -30,11 +30,20 @@
     <textarea class="form-control" name="description">${product.description}</textarea>
   </div>
   <div class="mb-3">
-    <label>ID Danh mục</label>
-    <input type="number" class="form-control" name="category_id" value="${product.categoryId}" required>
+    <label>Danh mục</label>
+    <select class="form-control" name="category_id" required>
+      <option value="">-- Chọn danh mục --</option>
+      <c:forEach var="cat" items="${categories}">
+        <option value="${cat.id}"
+          ${product != null && product.categoryId == cat.id ? "selected" : ""}>
+            ${cat.name}
+        </option>
+      </c:forEach>
+    </select>
   </div>
   <button type="submit" class="btn btn-success">Lưu</button>
   <a href="products" class="btn btn-secondary">Hủy</a>
+
 </form>
 </body>
 </html>
