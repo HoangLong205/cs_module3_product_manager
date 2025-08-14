@@ -40,7 +40,12 @@ public class CategoryController extends HttpServlet {
                 request.setAttribute("category", dao.getByIdCategory(idEdit));
                 request.getRequestDispatcher("/WEB-INF/category-form.jsp").forward(request, response);
                 break;
-
+            case "delete":
+                int idDelete = Integer.parseInt(request.getParameter("id"));
+                System.out.println("🗑 Xóa category ID = " + idDelete);
+                dao.deleteCategory(idDelete);
+                response.sendRedirect("categories");
+                break;
 
 
             default:

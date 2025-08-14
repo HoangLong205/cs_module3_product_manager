@@ -48,6 +48,17 @@ public class CategoryDAO {
         }
     }
 
+    public void deleteCategory(int id) {
+        String sql = "DELETE FROM categories WHERE id=?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
     public Category getByIdCategory(int id) {
         String sql = "SELECT * FROM categories WHERE id=?";
         try (Connection con = getConnection();
