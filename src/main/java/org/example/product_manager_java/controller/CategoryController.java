@@ -34,7 +34,12 @@ public class CategoryController extends HttpServlet {
                 System.out.println("➡ Mở form thêm mới category");
                 request.getRequestDispatcher("/WEB-INF/category-form.jsp").forward(request, response);
                 break;
-
+            case "edit":
+                int idEdit = Integer.parseInt(request.getParameter("id"));
+                System.out.println("✏ Chỉnh sửa category ID = " + idEdit);
+                request.setAttribute("category", dao.getByIdCategory(idEdit));
+                request.getRequestDispatcher("/WEB-INF/category-form.jsp").forward(request, response);
+                break;
 
 
 
@@ -54,6 +59,9 @@ public class CategoryController extends HttpServlet {
         if (id == null || id.isEmpty()) {
             System.out.println("➕ Thêm mới category: " + name);
             dao.insertCategory(new Category(name));
+        } else {
+            System.out.println("🔄 Cập nhật category ID = " + id + ", Name = " + name);
+            dao.updateCategory(new Category(Integer.parseInt(id), name));
         }
 
         response.sendRedirect("categories");

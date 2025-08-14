@@ -36,7 +36,32 @@ public class CategoryDAO {
         }
     }
 
+    public void updateCategory(Category c) {
+        String sql = "UPDATE categories SET name=? WHERE id=?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, c.getName());
+            ps.setInt(2, c.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
 
+    public Category getByIdCategory(int id) {
+        String sql = "SELECT * FROM categories WHERE id=?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Category(rs.getInt("id"), rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
 
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
