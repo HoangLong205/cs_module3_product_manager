@@ -46,7 +46,13 @@ public class CategoryController extends HttpServlet {
                 dao.deleteCategory(idDelete);
                 response.sendRedirect("categories");
                 break;
-
+            case "search":
+                String keyword = request.getParameter("name");
+                List<Category> categories = dao.searchByNameCategory(keyword);
+                System.out.println("Tìm kiếm category theo name = " + categories);
+                request.setAttribute("list", categories);
+                request.getRequestDispatcher("/WEB-INF/category-list.jsp").forward(request, response);
+                break;
 
             default:
                 System.out.println("📋 Lấy danh sách category");

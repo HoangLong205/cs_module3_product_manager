@@ -74,6 +74,23 @@ public class CategoryDAO {
         return null;
     }
 
+    public List<Category> searchByNameCategory(String query) {
+        List<Category> categories = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM categories WHERE name LIKE ?")) {
+            statement.setString(1, "%" + query + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                categories.add(new Category(id, name));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return categories;
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {
