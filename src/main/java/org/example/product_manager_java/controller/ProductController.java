@@ -11,8 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static org.example.product_manager_java.utils.DBConnection.getConnection;
 
 @WebServlet("/products")
 public class ProductController extends HttpServlet {
@@ -52,6 +59,13 @@ public class ProductController extends HttpServlet {
                 productDAO.deleteProduct(idDelete);
                 response.sendRedirect("products");
                 break;
+            case "search":
+                String keyword = request.getParameter("keyword");
+                String field = request.getParameter("field"); // name hoặc category
+                List<Product> products = productDAO.searchProducts(keyword, field);
+                request.setAttribute("products", products);
+                request.getRequestDispatcher("/WEB-INF/product-list.jsp").forward(request, response);
+                break;
             default:
                 System.out.println("📋 Lấy danh sách product");
                 request.setAttribute("products", productDAO.getAllProduct());
@@ -59,6 +73,7 @@ public class ProductController extends HttpServlet {
                 break;
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -78,7 +93,7 @@ public class ProductController extends HttpServlet {
         if (idStr == null || idStr.isEmpty()) {
             productDAO.insertProduct(product);
             System.out.println("Thêm sản phẩm thành công!");
-        }else {
+        } else {
             product.setId(Integer.parseInt(idStr));
             productDAO.updateProduct(product);
         }

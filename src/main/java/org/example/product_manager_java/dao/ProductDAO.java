@@ -116,6 +116,51 @@ public class ProductDAO {
         return product;
     }
 
+    public List<Product> searchProducts(String keyword, String field) {
+        List<Product> products = new ArrayList<>();
+        String sql = getString(field);
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + keyword + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("id"));
+                p.setName(rs.getString("name"));
+                p.setPrice(rs.getDouble("price"));
+                p.setQuantity(rs.getInt("quantity"));
+                p.setImage(rs.getString("image"));
+                p.setDescription(rs.getString("description"));
+                Category category = new Category();
+                category.setId(rs.getInt("category_id"));
+                category.setName(rs.getString("category_name"));
+                p.setCategory(category);
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
+    }
+
+    private static String getString(String field) {
+        String sql = "";
+
+        if ("name".equalsIgnoreCase(field)) {
+            sql = "SELECT p.*, c.name AS category_name " +
+                    "FROM products p " +
+                    "JOIN categories c ON p.category_id = c.id " +
+                    "WHERE p.name LIKE ?";
+        } else if ("category".equalsIgnoreCase(field)) {
+            sql = "SELECT p.*, c.name AS category_name " +
+                    "FROM products p " +
+                    "JOIN categories c ON p.category_id = c.id " +
+                    "WHERE c.name LIKE ?";
+        }
+        return sql;
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {
