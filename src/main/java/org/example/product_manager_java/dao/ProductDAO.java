@@ -116,14 +116,56 @@ public class ProductDAO {
         return product;
     }
 
-    public List<Product> searchProducts(String keyword, String field) {
-        List<Product> products = new ArrayList<>();
-        String sql = getString(field);
+//    public List<Product> searchProducts(String keyword, String field) {
+//        List<Product> products = new ArrayList<>();
+//        String sql = getString(field);
+//
+//        try (Connection conn = getConnection();
+//             PreparedStatement stmt = conn.prepareStatement(sql)) {
+//            stmt.setString(1, "%" + keyword + "%");
+//            ResultSet rs = stmt.executeQuery();
+//            while (rs.next()) {
+//                Product p = new Product();
+//                p.setId(rs.getInt("id"));
+//                p.setName(rs.getString("name"));
+//                p.setPrice(rs.getDouble("price"));
+//                p.setQuantity(rs.getInt("quantity"));
+//                p.setImage(rs.getString("image"));
+//                p.setDescription(rs.getString("description"));
+//                Category category = new Category();
+//                category.setId(rs.getInt("category_id"));
+//                category.setName(rs.getString("category_name"));
+//                p.setCategory(category);
+//                products.add(p);
+//            }
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+//        return products;
+//    }
 
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "%" + keyword + "%");
-            ResultSet rs = stmt.executeQuery();
+    public List<Product> searchProducts(String keyword, String field, int page, int pageSize) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.*, c.name AS category_name FROM products p " +
+                "LEFT JOIN categories c ON p.category_id = c.id " +
+                "WHERE ";
+
+        if ("category".equals(field)) {
+            sql += "c.name LIKE ? ";
+        } else {
+            sql += "p.name LIKE ? ";
+        }
+        sql += "LIMIT ? OFFSET ?";
+
+        int offset = (page - 1) * pageSize;
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ps.setInt(2, pageSize);
+            ps.setInt(3, offset);
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
                 p.setId(rs.getInt("id"));
@@ -132,16 +174,18 @@ public class ProductDAO {
                 p.setQuantity(rs.getInt("quantity"));
                 p.setImage(rs.getString("image"));
                 p.setDescription(rs.getString("description"));
+
                 Category category = new Category();
                 category.setId(rs.getInt("category_id"));
                 category.setName(rs.getString("category_name"));
                 p.setCategory(category);
-                products.add(p);
+
+                list.add(p);
             }
         } catch (SQLException e) {
             printSQLException(e);
         }
-        return products;
+        return list;
     }
 
     private static String getString(String field) {
@@ -175,5 +219,76 @@ public class ProductDAO {
                 }
             }
         }
+    }
+
+    public List<Product> getProductsByPage(int page, int pageSize) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.*, c.name AS category_name FROM products p " +
+                "LEFT JOIN categories c ON p.category_id = c.id " +
+                "LIMIT ? OFFSET ?";
+
+        int offset = (page - 1) * pageSize;
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, pageSize);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("id"));
+                p.setName(rs.getString("name"));
+                p.setPrice(rs.getDouble("price"));
+                p.setQuantity(rs.getInt("quantity"));
+                p.setImage(rs.getString("image"));
+                p.setDescription(rs.getString("description"));
+
+                Category category = new Category();
+                category.setId(rs.getInt("category_id"));
+                category.setName(rs.getString("category_name"));
+                p.setCategory(category);
+
+                list.add(p);
+            }
+
+            System.out.println("[DAO] getProductsByPage() => " + list.size() + " sản phẩm");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return list;
+    }
+
+    // Lấy tổng số sản phẩm để tính tổng số trang
+    public int getTotalProductCount() {
+        String sql = "SELECT COUNT(*) FROM products";
+        try (Connection con = getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
+    }
+
+    public int getTotalSearchCount(String keyword, String field) {
+        String sql = "SELECT COUNT(*) FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE ";
+        if ("category".equals(field)) {
+            sql += "c.name LIKE ?";
+        } else {
+            sql += "p.name LIKE ?";
+        }
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
     }
 }

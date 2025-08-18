@@ -74,22 +74,42 @@ public class CategoryDAO {
         return null;
     }
 
-    public List<Category> searchByNameCategory(String query) {
-        List<Category> categories = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM categories WHERE name LIKE ?")) {
-            statement.setString(1, "%" + query + "%");
-            ResultSet rs = statement.executeQuery();
+    //    public List<Category> searchByNameCategory(String query) {
+//        List<Category> categories = new ArrayList<>();
+//        try (Connection connection = getConnection();
+//             PreparedStatement statement = connection.prepareStatement("SELECT * FROM categories WHERE name LIKE ?")) {
+//            statement.setString(1, "%" + query + "%");
+//            ResultSet rs = statement.executeQuery();
+//            while (rs.next()) {
+//                int id = rs.getInt("id");
+//                String name = rs.getString("name");
+//                categories.add(new Category(id, name));
+//            }
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+//        return categories;
+//    }
+    public List<Category> searchByNameCategory(String keyword, int page, int pageSize) {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM categories WHERE name LIKE ? LIMIT ? OFFSET ?";
+        int offset = (page - 1) * pageSize;
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ps.setInt(2, pageSize);
+            ps.setInt(3, offset);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                categories.add(new Category(id, name));
+                list.add(new Category(rs.getInt("id"), rs.getString("name")));
             }
         } catch (SQLException e) {
             printSQLException(e);
         }
-        return categories;
+        return list;
     }
+
 
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
@@ -105,5 +125,52 @@ public class CategoryDAO {
                 }
             }
         }
+    }
+
+
+    public List<Category> getCategoriesByPage(int page, int pageSize) {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM categories LIMIT ? OFFSET ?";
+        int offset = (page - 1) * pageSize;
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, pageSize);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Category(rs.getInt("id"), rs.getString("name")));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return list;
+    }
+
+    public int getTotalCategoryCount() {
+        String sql = "SELECT COUNT(*) FROM categories";
+        try (Connection con = getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
+    }
+
+    // Lấy tổng số category tìm kiếm
+    public int getTotalSearchCount(String keyword) {
+        String sql = "SELECT COUNT(*) FROM categories WHERE name LIKE ?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
     }
 }
