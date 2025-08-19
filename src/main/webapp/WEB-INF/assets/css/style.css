@@ -1,0 +1,10 @@
+/* Theme color custom */
+.bg-deep-dark {
+    background-color: #001f3f !important; /* deep dark blue */
+}
+.text-aqua {
+    color: aqua !important;
+}
+.btn-rounded {
+    border-radius: 30px !important;
+}
