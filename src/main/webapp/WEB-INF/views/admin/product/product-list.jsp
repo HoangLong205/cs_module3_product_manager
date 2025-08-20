@@ -13,7 +13,7 @@
       <input class="form-control me-2 rounded-3 shadow-sm" type="search" name="keyword" placeholder="Tìm kiếm sản phẩm...">
       <button class="btn btn-info btn-rounded shadow"><i class="bi bi-search"></i></button>
     </form>
-    <c:if test="${sessionScope.account.role eq 'admin'}">
+    <c:if test="${sessionScope.user.role eq 'ADMIN'}">
       <a href="${pageContext.request.contextPath}/admin/product/add" class="btn btn-success btn-rounded shadow">
         (+) Thêm sản phẩm
       </a>
@@ -28,20 +28,18 @@
                alt="${p.name}" style="height:200px;object-fit:cover;">
           <div class="card-body">
             <h5 class="card-title text-primary">${p.name}</h5>
-            <p class="card-text">${p.category} - ${p.brand}</p>
-            <p class="text-danger fw-bold">${p.price} đ</p>
+            <p class="card-text">${p.category}</p>
+            <p class="text-danger fw-bold">${p.price}</p>
           </div>
           <div class="card-footer text-center bg-light rounded-bottom-4">
             <c:choose>
-              <c:when test="${sessionScope.account.role eq 'admin'}">
+              <c:when test="${sessionScope.user.role eq 'admin'}">
                 <a href="${pageContext.request.contextPath}/admin/product/detail?id=${p.id}"
                    class="btn btn-warning btn-rounded shadow w-100">Chi tiết / Chỉnh sửa</a>
               </c:when>
               <c:otherwise>
                 <a href="${pageContext.request.contextPath}/user/product/detail?id=${p.id}"
                    class="btn btn-primary btn-rounded shadow w-100 mb-2">Xem chi tiết</a>
-                <a href="${pageContext.request.contextPath}/cart/add?id=${p.id}"
-                   class="btn btn-success btn-rounded shadow w-100">Thêm giỏ hàng</a>
               </c:otherwise>
             </c:choose>
           </div>

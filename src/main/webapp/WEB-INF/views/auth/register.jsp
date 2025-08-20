@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-4">
@@ -41,3 +42,7 @@
     </div>
   </div>
 </div>
+
+<c:if test="${not empty error}">
+  <div class="alert alert-danger mt-3">${error}</div>
+</c:if>

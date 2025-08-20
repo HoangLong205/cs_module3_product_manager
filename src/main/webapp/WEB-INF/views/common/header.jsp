@@ -20,7 +20,7 @@
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav ms-auto">
       <c:choose>
-        <c:when test="${empty sessionScope.account}">
+        <c:when test="${empty sessionScope.user}">
           <li class="nav-item">
             <a class="nav-link text-white btn btn-primary btn-sm mx-1 btn-rounded shadow"
                href="${pageContext.request.contextPath}/login">Đăng nhập</a>
@@ -32,9 +32,9 @@
         </c:when>
         <c:otherwise>
           <li class="nav-item">
-            <span class="nav-link text-aqua fw-bold">Xin chào, ${sessionScope.account.username}</span>
+            <span class="nav-link text-aqua fw-bold">Xin chào, ${sessionScope.user.username}</span>
           </li>
-          <c:if test="${sessionScope.account.role eq 'user'}">
+          <c:if test="${sessionScope.user.role eq 'user'}">
             <li class="nav-item">
               <a class="nav-link text-white btn btn-info btn-sm mx-1 btn-rounded shadow"
                  href="${pageContext.request.contextPath}/cart">

@@ -18,10 +18,6 @@
         <input type="text" class="form-control" name="name" value="${product.name}" required/>
       </div>
       <div class="mb-3">
-        <label class="form-label">Hãng</label>
-        <input type="text" class="form-control" name="brand" value="${product.brand}" required/>
-      </div>
-      <div class="mb-3">
         <label class="form-label">Phân loại</label>
         <input type="text" class="form-control" name="category" value="${product.category}" required/>
       </div>

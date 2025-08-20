@@ -12,7 +12,7 @@
       <input class="form-control me-2" type="search" name="keyword" placeholder="Tìm kiếm sản phẩm...">
       <button class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
     </form>
-    <c:if test="${sessionScope.account.role eq 'admin'}">
+    <c:if test="${sessionScope.user.role eq 'ADMIN'}">
       <a href="${pageContext.request.contextPath}/admin/product/add" class="btn btn-success">
         (+) Thêm sản phẩm
       </a>
@@ -26,12 +26,13 @@
           <img src="${p.image}" class="card-img-top" alt="${p.name}" style="height:200px;object-fit:cover;">
           <div class="card-body">
             <h5 class="card-title">${p.name}</h5>
-            <p class="card-text">${p.category} - ${p.brand}</p>
-            <p class="text-danger fw-bold">${p.price} đ</p>
+            <p class="card-text">${p.category}</p>
+            <p class="text-danger fw-bold">${p.price} </p>
+            <p class="card-text">${p.description}</p>
           </div>
           <div class="card-footer text-center">
             <c:choose>
-              <c:when test="${sessionScope.account.role eq 'admin'}">
+              <c:when test="${sessionScope.user.role eq 'ADMIN'}">
                 <a href="${pageContext.request.contextPath}/admin/product/edit?id=${p.id}"
                    class="btn btn-warning w-100">Chỉnh sửa</a>
               </c:when>

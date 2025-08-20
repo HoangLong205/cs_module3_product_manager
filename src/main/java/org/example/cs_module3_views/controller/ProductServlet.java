@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/admin/product-list", "/user/product-list"})
+@WebServlet(urlPatterns = {"/admin/product/product-list", "/user/product-list"})
 public class ProductServlet extends HttpServlet {
     private ProductDAO productDAO;
 
@@ -25,7 +25,7 @@ public class ProductServlet extends HttpServlet {
 
         String path = request.getServletPath();
         if (path.startsWith("/admin")) {
-            request.getRequestDispatcher("/WEB-INF/views/admin/product-list.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/admin/product/product-list.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/views/user/product-list.jsp").forward(request, response);
         }

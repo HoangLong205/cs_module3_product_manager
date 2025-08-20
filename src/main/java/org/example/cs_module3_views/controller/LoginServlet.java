@@ -28,9 +28,9 @@ public class LoginServlet extends HttpServlet {
         if (request.getSession().getAttribute("user") != null) {
             User user = (User) request.getSession().getAttribute("user");
             if ("ADMIN".equals(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/admin/product-list");
+                response.sendRedirect(request.getContextPath() + "/admin/product/product-list");
             } else {
-                response.sendRedirect(request.getContextPath() + "/user/product-list");
+                response.sendRedirect(request.getContextPath() + "/user/product/product-list");
             }
             return;
         }
@@ -39,18 +39,18 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String email = request.getParameter("email");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User authUser = userDAO.findByEmailAndPassword(email, UserDAO.hashPassword(password));
+        User authUser = userDAO.findByUsernameAndPassword(username, password);
 
         if (authUser != null) {
             request.getSession().setAttribute("user", authUser);
             System.out.println(">>> LoginController: Đăng nhập thành công cho user: "
-                    + authUser.getEmail() + " với vai trò: " + authUser.getRole());
+                    + authUser.getUsername() + " với vai trò: " + authUser.getRole());
 
             if ("ADMIN".equalsIgnoreCase(authUser.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/admin/product-list");
+                response.sendRedirect(request.getContextPath() + "/admin/product/product-list");
                 return;
             } else {
                 response.sendRedirect(request.getContextPath() + "/user/product-list");
