@@ -14,13 +14,12 @@
     </div>
     <div class="col-md-7">
       <h2>${product.name}</h2>
-      <p><strong>Hãng:</strong> ${product.brand}</p>
       <p><strong>Phân loại:</strong> ${product.category}</p>
       <p><strong>Ngày cập nhật:</strong> ${product.updatedAt}</p>
       <p class="fw-bold fs-4 text-danger">${product.price} đ</p>
       <p><strong>Mô tả:</strong> ${product.description}</p>
 
-      <a href="${pageContext.request.contextPath}/admin/product/edit?id=${product.id}"
+      <a href="${pageContext.request.contextPath}/admin/product/product-edit?id=${product.id}"
          class="btn btn-warning btn-lg">Chỉnh sửa sản phẩm</a>
     </div>
   </div>

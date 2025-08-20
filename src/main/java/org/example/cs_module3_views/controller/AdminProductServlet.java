@@ -23,13 +23,13 @@ public class AdminProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
 
-        if (path == null || path.equals("/list")) {
+        if (path == null || path.equals("/product-list")) {
             listProducts(request, response);
-        } else if (path.equals("/detail")) {
+        } else if (path.equals("/product-detail")) {
             showDetail(request, response);
-        } else if (path.equals("/add")) {
-            request.getRequestDispatcher("/views/admin/product/product-add.jsp").forward(request, response);
-        } else if (path.equals("/edit")) {
+        } else if (path.equals("/product-add")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/product/product-add.jsp").forward(request, response);
+        } else if (path.equals("/product-edit")) {
             showEditForm(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -54,21 +54,21 @@ public class AdminProductServlet extends HttpServlet {
     private void listProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> list = productDAO.findAll();
         request.setAttribute("products", list);
-        request.getRequestDispatcher("/views/admin/product/product-list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/admin/product/product-list.jsp").forward(request, response);
     }
 
     private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         Product product = productDAO.findById(id);
         request.setAttribute("product", product);
-        request.getRequestDispatcher("/views/admin/product/product-detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/admin/product/product-detail.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         Product product = productDAO.findById(id);
         request.setAttribute("product", product);
-        request.getRequestDispatcher("/views/admin/product/product-edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/admin/product/product-edit.jsp").forward(request, response);
     }
 
     private void insertProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -82,7 +82,7 @@ public class AdminProductServlet extends HttpServlet {
         Product newProduct = new Product(0, name, price, quantity, image, description, null);
         productDAO.insert(newProduct, categoryId);
 
-        response.sendRedirect(request.getContextPath() + "/admin/product/list");
+        response.sendRedirect(request.getContextPath() + "/admin/product/product-list");
     }
 
     private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -97,12 +97,12 @@ public class AdminProductServlet extends HttpServlet {
         Product product = new Product(id, name, price, quantity, image, description, null);
         productDAO.update(product, categoryId);
 
-        response.sendRedirect(request.getContextPath() + "/admin/product/list");
+        response.sendRedirect(request.getContextPath() + "/admin/product/product-list");
     }
 
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         productDAO.delete(id);
-        response.sendRedirect(request.getContextPath() + "/admin/product/list");
+        response.sendRedirect(request.getContextPath() + "/admin/product/product-list");
     }
 }

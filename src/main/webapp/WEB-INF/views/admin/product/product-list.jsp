@@ -33,8 +33,8 @@
           </div>
           <div class="card-footer text-center bg-light rounded-bottom-4">
             <c:choose>
-              <c:when test="${sessionScope.user.role eq 'admin'}">
-                <a href="${pageContext.request.contextPath}/admin/product/detail?id=${p.id}"
+              <c:when test="${sessionScope.user.role eq 'ADMIN'}">
+                <a href="${pageContext.request.contextPath}/admin/product/product-detail?id=${p.id}"
                    class="btn btn-warning btn-rounded shadow w-100">Chi tiết / Chỉnh sửa</a>
               </c:when>
               <c:otherwise>

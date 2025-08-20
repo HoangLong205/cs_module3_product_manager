@@ -35,7 +35,7 @@
       </div>
 
       <button type="submit" class="btn btn-success">Lưu thay đổi</button>
-      <a href="${pageContext.request.contextPath}/admin/products" class="btn btn-secondary">Hủy</a>
+      <a href="${pageContext.request.contextPath}/admin/product/product-list" class="btn btn-secondary">Hủy</a>
     </form>
   </div>
 </div>
