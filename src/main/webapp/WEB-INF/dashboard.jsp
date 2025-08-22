@@ -62,9 +62,10 @@
         <nav class="col-md-3 col-lg-2 d-md-block sidebar">
             <%-- Cập nhật các đường link để trỏ đến AdminController --%>
             <a href="admin?view=dashboard">Dashboard tổng quát</a>
+            <a href="admin?view=users">Danh sách người dùng</a>
             <a href="admin?view=categories">Danh sách loại sản phẩm</a>
             <a href="admin?view=products">Danh sách sản phẩm</a>
-
+            <a href="admin?view=orders">Danh sách đơn hàng</a>
             <div class="mt-auto logout-btn">
                 <a href="logout"><i class="fa fa-sign-out-alt me-2"></i> Đăng xuất</a>
             </div>

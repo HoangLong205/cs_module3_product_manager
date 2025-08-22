@@ -116,33 +116,6 @@ public class ProductDAO {
         return product;
     }
 
-//    public List<Product> searchProducts(String keyword, String field) {
-//        List<Product> products = new ArrayList<>();
-//        String sql = getString(field);
-//
-//        try (Connection conn = getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setString(1, "%" + keyword + "%");
-//            ResultSet rs = stmt.executeQuery();
-//            while (rs.next()) {
-//                Product p = new Product();
-//                p.setId(rs.getInt("id"));
-//                p.setName(rs.getString("name"));
-//                p.setPrice(rs.getDouble("price"));
-//                p.setQuantity(rs.getInt("quantity"));
-//                p.setImage(rs.getString("image"));
-//                p.setDescription(rs.getString("description"));
-//                Category category = new Category();
-//                category.setId(rs.getInt("category_id"));
-//                category.setName(rs.getString("category_name"));
-//                p.setCategory(category);
-//                products.add(p);
-//            }
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-//        return products;
-//    }
 
     public List<Product> searchProducts(String keyword, String field, int page, int pageSize) {
         List<Product> list = new ArrayList<>();
@@ -188,22 +161,6 @@ public class ProductDAO {
         return list;
     }
 
-    private static String getString(String field) {
-        String sql = "";
-
-        if ("name".equalsIgnoreCase(field)) {
-            sql = "SELECT p.*, c.name AS category_name " +
-                    "FROM products p " +
-                    "JOIN categories c ON p.category_id = c.id " +
-                    "WHERE p.name LIKE ?";
-        } else if ("category".equalsIgnoreCase(field)) {
-            sql = "SELECT p.*, c.name AS category_name " +
-                    "FROM products p " +
-                    "JOIN categories c ON p.category_id = c.id " +
-                    "WHERE c.name LIKE ?";
-        }
-        return sql;
-    }
 
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
@@ -291,4 +248,20 @@ public class ProductDAO {
         }
         return 0;
     }
+
+    // Đếm số sản phẩm
+    public int countProducts() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM products";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) count = rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+
 }
