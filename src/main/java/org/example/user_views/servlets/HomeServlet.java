@@ -1,0 +1,40 @@
+package org.example.user_views.servlets;
+
+import org.example.user_views.dao.ProductDAO;
+import org.example.user_views.models.Product;
+
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+
+
+@WebServlet(urlPatterns = {"", "/", "/home"})
+public class HomeServlet extends HttpServlet {
+    private final ProductDAO productDAO = new ProductDAO();
+    private static final int PAGE_SIZE = 20; // 4 x 5 grid
+
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String q = req.getParameter("q");
+        int page = 1;
+        try { page = Integer.parseInt(req.getParameter("page")); } catch (Exception ignored) {}
+        if (page < 1) page = 1;
+
+
+        int total = productDAO.countBySearch(q);
+        int totalPages = (int) Math.ceil(total / (double) PAGE_SIZE);
+        int offset = (page - 1) * PAGE_SIZE;
+        List<Product> products = productDAO.findPaged(q, offset, PAGE_SIZE);
+
+
+        req.setAttribute("q", q == null ? "" : q);
+        req.setAttribute("products", products);
+        req.setAttribute("page", page);
+        req.setAttribute("totalPages", totalPages);
+        req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
+    }
+}
