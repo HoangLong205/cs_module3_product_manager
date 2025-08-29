@@ -2,89 +2,76 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html>
-<head>
-    <title>Dashboard - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-<div class="container-fluid p-4">
+<div class="container-fluid">
+    <h3 class="mb-4">Dashboard Tổng quan</h3>
 
-    <!-- Cards Section -->
     <div class="row g-4 mb-4">
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Tổng đơn hàng</h5>
-                    <h3 class="text-primary"><fmt:formatNumber value="${totalOrders}" type="number"/></h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-primary"><i class="fas fa-shopping-cart me-2"></i> Tổng đơn hàng</h5>
+                    <h3 class="fw-bold mt-2"><fmt:formatNumber value="${totalOrders}" type="number"/></h3>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Doanh thu</h5>
-                    <h3 class="text-success"><fmt:formatNumber value="${totalRevenue}" type="number" groupingUsed="true"/> VNĐ</h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-success">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-chart-line me-2"></i> Doanh thu</h5>
+                    <h3 class="fw-bold mt-2"><fmt:formatNumber value="${totalRevenue}" type="number" groupingUsed="true"/> VNĐ</h3>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Khách hàng</h5>
-                    <h3 class="text-warning"><c:out value="${totalCustomers}"/></h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-warning">
+                <div class="card-body">
+                    <h5 class="card-title text-warning"><i class="fas fa-users me-2"></i> Khách hàng</h5>
+                    <h3 class="fw-bold mt-2"><c:out value="${totalCustomers}"/></h3>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Sản phẩm</h5>
-                    <h3 class="text-danger"><c:out value="${totalProducts}"/></h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-danger">
+                <div class="card-body">
+                    <h5 class="card-title text-danger"><i class="fas fa-box me-2"></i> Sản phẩm</h5>
+                    <h3 class="fw-bold mt-2"><c:out value="${totalProducts}"/></h3>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card text-center">
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5>Pending</h5>
-                    <h3>${orderStatusCounts['PENDING'] != null ? orderStatusCounts['PENDING'] : 0}</h3>
+                    <h5 class="card-title text-muted">Pending</h5>
+                    <h3 class="fw-bold">${orderStatusCounts['PENDING'] != null ? orderStatusCounts['PENDING'] : 0}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center">
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5>Confirmed</h5>
-                    <h3>${orderStatusCounts['CONFIRMED'] != null ? orderStatusCounts['CONFIRMED'] : 0}</h3>
+                    <h5 class="card-title text-info">Confirmed</h5>
+                    <h3 class="fw-bold">${orderStatusCounts['CONFIRMED'] != null ? orderStatusCounts['CONFIRMED'] : 0}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center">
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5>Completed</h5>
-                    <h3>${orderStatusCounts['COMPLETED'] != null ? orderStatusCounts['COMPLETED'] : 0}</h3>
+                    <h5 class="card-title text-success">Completed</h5>
+                    <h3 class="fw-bold">${orderStatusCounts['COMPLETED'] != null ? orderStatusCounts['COMPLETED'] : 0}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center">
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5>Cancelled</h5>
-                    <h3>${orderStatusCounts['CANCELLED'] != null ? orderStatusCounts['CANCELLED'] : 0}</h3>
+                    <h5 class="card-title text-danger">Cancelled</h5>
+                    <h3 class="fw-bold">${orderStatusCounts['CANCELLED'] != null ? orderStatusCounts['CANCELLED'] : 0}</h3>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-</body>
-</html>

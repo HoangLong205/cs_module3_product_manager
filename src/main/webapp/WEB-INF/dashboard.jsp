@@ -1,87 +1,132 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <%-- Sử dụng biến title được gửi từ AdminController --%>
     <title>${title}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <%-- Bạn nên tạo file CSS riêng thay vì dùng style inline --%>
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-light: #f8f9fa;
+            --background-dark: #343a40;
+            --text-dark: #212529;
+            --text-light: #f8f9fa;
+            --sidebar-bg: #495057;
+            --sidebar-hover: #6c757d;
+        }
+
         body {
             display: flex;
-            flex-direction: column;
             min-height: 100vh;
-            margin: 0;
+            flex-direction: column;
+            background-color: var(--background-light);
+            color: var(--text-dark);
         }
 
-        header {
-            flex: 0 0 auto;
+        .header {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        footer {
-            flex: 0 0 auto;
-        }
-
-        .content {
-            flex: 1 0 auto;
+        .content-wrapper {
             display: flex;
+            flex-grow: 1;
         }
 
-        /* Sidebar chiếm toàn bộ chiều cao phần content */
         .sidebar {
-            background-color: #acc;
-            padding: 15px;
-            min-height: 100%; /* đầy đủ chiều cao phần content */
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            color: var(--text-light);
+            padding: 1rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
-        /* Tùy chỉnh các link */
         .sidebar a {
             display: block;
-            padding: 10px 15px;
-            color: #333;
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .sidebar a:hover {
-            background-color: #e9ecef;
+            background-color: var(--sidebar-hover);
+            color: white;
         }
+
+        .sidebar a.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+        }
+
+        .footer {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            padding: 1rem;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
-<header class="bg-primary text-white p-3">
-    <%-- Sử dụng biến title ở header --%>
-    <h3 class="text-center mb-0">${title}</h3>
+<header class="header text-center">
+    <h3>${title}</h3>
 </header>
 
-<div class="container-fluid content">
-    <div class="row flex-grow-1">
-        <nav class="col-md-3 col-lg-2 d-md-block sidebar">
-            <%-- Cập nhật các đường link để trỏ đến AdminController --%>
-            <a href="admin?view=dashboard">Dashboard tổng quát</a>
-            <a href="admin?view=users">Danh sách người dùng</a>
-            <a href="admin?view=categories">Danh sách loại sản phẩm</a>
-            <a href="admin?view=products">Danh sách sản phẩm</a>
-            <a href="admin?view=orders">Danh sách đơn hàng</a>
-            <div class="mt-auto logout-btn">
-                <a href="logout"><i class="fa fa-sign-out-alt me-2"></i> Đăng xuất</a>
+<div class="content-wrapper">
+    <nav class="sidebar d-md-block">
+        <div class="d-flex flex-column h-100">
+            <a href="admin?view=dashboard" class="${param.view == 'dashboard' ? 'active' : ''}">
+                <i class="fa fa-tachometer-alt me-2"></i> Dashboard Tổng quan
+            </a>
+            <a href="admin?view=users" class="${param.view == 'users' ? 'active' : ''}">
+                <i class="fa fa-users me-2"></i> Danh sách người dùng
+            </a>
+            <a href="admin?view=categories" class="${param.view == 'categories' ? 'active' : ''}">
+                <i class="fa fa-list me-2"></i> Danh sách loại sản phẩm
+            </a>
+            <a href="admin?view=products" class="${param.view == 'products' ? 'active' : ''}">
+                <i class="fa fa-box me-2"></i> Danh sách sản phẩm
+            </a>
+            <a href="admin?view=orders" class="${param.view == 'orders' ? 'active' : ''}">
+                <i class="fa fa-shopping-cart me-2"></i> Danh sách đơn hàng
+            </a>
+            <div class="mt-auto">
+                <a href="logout">
+                    <i class="fa fa-sign-out-alt me-2"></i> Đăng xuất
+                </a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 p-4">
-            <%-- Nội dung động sẽ được nạp vào đây --%>
-            <c:if test="${pageContent != null}">
-                <jsp:include page="${pageContent}"/>
-            </c:if>
-        </main>
-    </div>
+    <main class="main-content">
+        <c:if test="${pageContent != null}">
+            <jsp:include page="${pageContent}"/>
+        </c:if>
+    </main>
 </div>
 
-<footer class="text-center bg-primary text-white p-3">
-    <h4 class="text-center mb-0">&copy; 2025 - Hệ thống quản lý sản phẩm</h4>
+<footer class="footer">
+    &copy; 2025 - Hệ thống quản lý sản phẩm
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

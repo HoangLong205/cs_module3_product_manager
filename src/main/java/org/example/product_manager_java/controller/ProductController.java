@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.logging.Logger;
 
 
 @WebServlet("/products")
 public class ProductController extends HttpServlet {
+
+
     private static final Logger logger = Logger.getLogger(ProductController.class.getName());
 
     private CategoryDAO categoryDAO;
@@ -35,59 +36,28 @@ public class ProductController extends HttpServlet {
         logger.info("Action: " + action);
         if (action == null) action = "list";
         System.out.println("🛠 [GET] Action = " + action);
+
         switch (action) {
-            case "view":
-//                int idView = Integer.parseInt(request.getParameter("id"));
-//                Product productView = productDAO.getByIdProduct(idView);
-//                request.setAttribute("product", productView);
-//                request.getRequestDispatcher("/WEB-INF/product-detail.jsp").forward(request, response);
-                int idView = Integer.parseInt(request.getParameter("id"));
-                // Chuyển hướng sang AdminController để hiển thị chi tiết trong dashboard
-                response.sendRedirect("admin?view=product-detail&id=" + idView);
-                break;
-            case "new":
-                System.out.println("➡ Mở form thêm mới product");
-//                request.setAttribute("categories", categoryDAO.getAllCategory());
-//                request.getRequestDispatcher("/WEB-INF/product-form.jsp").forward(request, response);
-//                response.sendRedirect("admin?view=product-form");
-                response.sendRedirect("admin?view=product-form");
-                break;
-            case "edit":
-                int idEdit = Integer.parseInt(request.getParameter("id"));
-//                Product product = productDAO.getByIdProduct(id);
-//                request.setAttribute("product", product);
-//                request.setAttribute("categories", categoryDAO.getAllCategory());
-//                request.getRequestDispatcher("/WEB-INF/product-form.jsp").forward(request, response);
-                response.sendRedirect("admin?view=product-form&id=" + idEdit);
-                break;
             case "delete":
                 int idDelete = Integer.parseInt(request.getParameter("id"));
                 System.out.println("🗑 Xóa product ID = " + idDelete);
                 productDAO.deleteProduct(idDelete);
-                response.sendRedirect("products");
                 break;
             case "search":
                 String keyword = request.getParameter("keyword");
-                String field = request.getParameter("field"); // name hoặc category
-//                List<Product> products = productDAO.searchProducts(keyword, field);
-//                request.setAttribute("products", products);
-//                request.getRequestDispatcher("/WEB-INF/product-list.jsp").forward(request, response);
+                String field = request.getParameter("field");
                 response.sendRedirect("admin?view=products&keyword="
                         + URLEncoder.encode(keyword, "UTF-8")
                         + "&field=" + URLEncoder.encode(field, "UTF-8"));
-                break;
-            default:
-                System.out.println("📋 Lấy danh sách product");
-                request.setAttribute("products", productDAO.getAllProduct());
-                request.getRequestDispatcher("/WEB-INF/product-list.jsp").forward(request, response);
-                break;
+                return;
         }
+
+        response.sendRedirect("admin?view=products");
     }
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // THÊM DÒNG NÀY VÀO ĐẦU TIÊN
         request.setCharacterEncoding("UTF-8");
         int categoryId = Integer.parseInt(request.getParameter("category_id"));
         Category category = categoryDAO.getByIdCategory(categoryId);
@@ -107,9 +77,9 @@ public class ProductController extends HttpServlet {
         } else {
             product.setId(Integer.parseInt(idStr));
             productDAO.updateProduct(product);
+            System.out.println("Cập nhật sản phẩm thành công!");
         }
 
-
-        response.sendRedirect("admin?view=products");/////
+        response.sendRedirect("admin?view=products");
     }
 }

@@ -10,11 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.logging.Logger;
 
 @WebServlet("/categories")
 public class CategoryController extends HttpServlet {
+
+
     private static final Logger logger = Logger.getLogger(CategoryController.class.getName());
 
     private CategoryDAO dao;
@@ -31,41 +32,18 @@ public class CategoryController extends HttpServlet {
         if (action == null) action = "list";
         System.out.println("🛠 [GET] Action = " + action);
         switch (action) {
-            case "new":
-                System.out.println("➡ Mở form thêm mới category");
-//                request.getRequestDispatcher("/WEB-INF/category-form.jsp").forward(request, response);
-                response.sendRedirect("admin?view=category-form");
-                break;
-            case "edit":
-//                int idEdit = Integer.parseInt(request.getParameter("id"));
-//                System.out.println("✏ Chỉnh sửa category ID = " + idEdit);
-//                request.setAttribute("category", dao.getByIdCategory(idEdit));
-//                request.getRequestDispatcher("/WEB-INF/category-form.jsp").forward(request, response);
-                int idEdit = Integer.parseInt(request.getParameter("id"));
-                // Chuyển hướng đến AdminController để hiển thị form sửa, kèm theo id
-                response.sendRedirect("admin?view=category-form&id=" + idEdit);
-                break;
             case "delete":
                 int idDelete = Integer.parseInt(request.getParameter("id"));
                 System.out.println("🗑 Xóa category ID = " + idDelete);
                 dao.deleteCategory(idDelete);
-                response.sendRedirect("admin?view=categories");////////
                 break;
             case "search":
                 String keyword = request.getParameter("name");
-//                List<Category> categories = dao.searchByNameCategory(keyword);
-//                System.out.println("Tìm kiếm category theo name = " + categories);
-//                request.setAttribute("list", categories);
-//                request.getRequestDispatcher("/WEB-INF/category-list.jsp").forward(request, response);
                 response.sendRedirect("admin?view=categories&search=" + URLEncoder.encode(keyword, "UTF-8"));
-                break;
-
-            default:
-                System.out.println("📋 Lấy danh sách category");
-                request.setAttribute("list", dao.getAllCategory());
-                request.getRequestDispatcher("/WEB-INF/category-list.jsp").forward(request, response);
-                break;
+                return;
         }
+
+        response.sendRedirect("admin?view=categories");
     }
 
     @Override
@@ -82,6 +60,6 @@ public class CategoryController extends HttpServlet {
             dao.updateCategory(new Category(Integer.parseInt(id), name));
         }
 
-        response.sendRedirect("admin?view=categories");///////
+        response.sendRedirect("admin?view=categories");
     }
 }
