@@ -27,7 +27,7 @@
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <h6 class="mb-1">Đơn hàng #${o.id}</h6>
-              <div class="text-muted small">Ngày: ${o.createdAt}</div>
+              <div class="text-muted small">Ngày: ${o.orderDate}</div>
             </div>
             <span class="badge bg-primary">${o.status}</span>
           </div>

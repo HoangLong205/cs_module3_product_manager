@@ -8,7 +8,7 @@ public class Order {
     private int id;
     private int userId;
     private OrderStatus status;
-    private LocalDateTime order_date;
+    private LocalDateTime orderDate;
     private double total;
     private List<OrderItem> items;
 
@@ -19,8 +19,8 @@ public class Order {
     public void setUserId(int userId) { this.userId = userId; }
     public OrderStatus getStatus() { return status; }
     public void setStatus(OrderStatus status) { this.status = status; }
-    public LocalDateTime getOrderDate() { return order_date; }
-    public void setOrderDate(LocalDateTime order_date) { this.order_date = order_date; }
+    public LocalDateTime getOrderDate() { return orderDate; }
+    public void setOrderDate(LocalDateTime orderDate) { this.orderDate = orderDate; }
     public double getTotal() { return total; }
     public void setTotal(double total) { this.total = total; }
     public List<OrderItem> getItems() { return items; }
