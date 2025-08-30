@@ -1,0 +1,31 @@
+:root {
+    --aqua: #00ffff;
+}
+
+/* nút màu aqua */
+.btn-aqua {
+    background-color: var(--aqua);
+    color: #000; /* chữ đen cho dễ nhìn */
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    transition: filter 0.2s ease;
+}
+.btn-aqua:hover {
+    filter: brightness(0.9);
+}
+
+/* thẻ sản phẩm */
+.product-card {
+    transition: transform .1s ease, box-shadow .2s ease;
+    border-radius: 16px;
+    overflow: hidden;
+}
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.25),
+    0 0 0 2px var(--aqua) inset;
+}
+
+/* ảnh */
+.object-fit-cover { object-fit: cover; }
