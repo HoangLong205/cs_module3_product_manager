@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
 
@@ -40,7 +41,9 @@
             <div class="card-body">
               <h6 class="card-title text-dark-blue">${p.name}</h6>
               <p class="card-text mb-1"><span class="badge bg-secondary">Còn: ${p.quantity}</span></p>
-              <p class="fw-bold text-primary">${p.price} ₫</p>
+              <p class="fw-bold text-primary">
+                <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> ₫
+              </p>
             </div>
           </a>
           <div class="card-footer bg-transparent border-0 pb-3 px-3">
