@@ -30,7 +30,9 @@
         <tr>
           <td class="text-white">${ci.product.name}</td>
           <td class="text-white-50">${ci.product.category.name}</td>
-          <td>${ci.product.price} ₫</td>
+          <td>
+            <fmt:formatNumber value="${ci.product.price}" type="currency" groupingUsed="true"/>
+          </td>
           <td>
             <form action="${ctx}/cart" method="post" class="d-flex gap-2">
               <input type="hidden" name="action" value="update">
@@ -39,12 +41,16 @@
               <button class="btn btn-outline-light" type="submit">Cập nhật</button>
             </form>
           </td>
-          <td>${ci.lineTotal} ₫</td>
+          <td>
+            <fmt:formatNumber value="${ci.lineTotal}" groupingUsed="true"/> ₫
+          </td>
           <td>
             <a href="${ctx}/cart?action=remove&id=${ci.product.id}" class="btn btn-sm btn-danger">Xoá</a>
           </td>
         </tr>
-        <c:set var="total" value="${total + ci.lineTotal}"/>
+        <c:set var="total" >
+          <fmt:formatNumber value="${ci.lineTotal}" groupingUsed="true"/>
+        </c:set>
       </c:forEach>
       </tbody>
       <tfoot>
