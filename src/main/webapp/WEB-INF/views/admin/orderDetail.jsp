@@ -11,7 +11,11 @@
             <p><b>Khách hàng:</b> ${order.user.username}</p>
             <p><b>Ngày đặt:</b> <fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy HH:mm" /></p>
             <p><b>Tổng tiền:</b> <fmt:formatNumber value="${order.total}" type="number" groupingUsed="true"/> VND</p>
-            <p><b>Trạng thái:</b> <span class="badge bg-primary">${order.status}</span></p>
+            <p><b>Trạng thái:</b>
+                <span class="badge bg-${order.status.badgeClass}">
+                    ${order.status.viText}
+                </span>
+            </p>
         </div>
     </div>
 

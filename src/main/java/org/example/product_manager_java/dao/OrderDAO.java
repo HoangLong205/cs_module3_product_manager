@@ -95,6 +95,18 @@ public class OrderDAO {
         }
     }
 
+    public boolean softDeleteOrder(int orderId) {
+        String sql = "UPDATE orders SET status = 'Deleted' WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     // Đếm tổng số đơn hàng
     public int countAll() {
         int count = 0;
@@ -112,7 +124,7 @@ public class OrderDAO {
     // Tính tổng doanh thu
     public double sumRevenue() {
         double total = 0;
-        String sql = "SELECT SUM(total) FROM orders"; // total là cột tổng tiền đơn
+        String sql = "SELECT SUM(total) FROM orders WHERE status = 'COMPLETED'"; // total là cột tổng tiền đơn
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {

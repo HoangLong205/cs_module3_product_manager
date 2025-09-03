@@ -13,10 +13,27 @@ public class Order {
     private OrderStatus status;
 
     public enum OrderStatus {
-        PENDING,
-        CONFIRMED,
-        COMPLETED,
-        CANCELLED
+        PENDING("Chờ xử lý", "warning"),
+        CONFIRMED("Đã xác nhận", "info"),
+        COMPLETED("Hoàn thành", "success"),
+        CANCELLED("Đã hủy", "danger"),
+        DELETED("Đã xóa", "secondary");
+
+        private final String viText;
+        private final String badgeClass;
+
+        OrderStatus(String viText, String badgeClass) {
+            this.viText = viText;
+            this.badgeClass = badgeClass;
+        }
+
+        public String getViText() {
+            return viText;
+        }
+
+        public String getBadgeClass() {
+            return badgeClass;
+        }
     }
 
     private List<OrderItem> items; // Quan hệ 1-nhiều

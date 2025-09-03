@@ -119,10 +119,14 @@ public class AdminController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
             case "deleteOrder":
-                int deleteId = Integer.parseInt(request.getParameter("id"));
-                orderDAO.deleteOrder(deleteId);
-                response.sendRedirect("admin?view=orders");
-                return;
+                try {
+                    int deleteId = Integer.parseInt(request.getParameter("id"));
+                    orderDAO.updateOrderStatus(deleteId, Order.OrderStatus.DELETED); // Chuyển trạng thái sang DELETED
+                    response.sendRedirect("admin?view=orders");
+                    return;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             default:
                 handleDashboard(request);
 //                pageContent = "/WEB-INF/dashboard-main.jsp";

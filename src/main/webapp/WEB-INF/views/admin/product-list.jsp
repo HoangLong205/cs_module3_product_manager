@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Danh sách sản phẩm</h3>
@@ -50,18 +50,15 @@
                             <button class="btn btn-info btn-sm view-product-detail" data-id="${product.id}">
                                 <i class="fas fa-eye"></i> Xem chi tiết
                             </button>
-                            <button class="btn btn-warning btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#productModal"
-                                    onclick="editProduct(
-                                            '${product.id}',
-                                            '${product.name}',
-                                            '${product.price}',
-                                            '${product.quantity}',
-                                            '${product.image}',
-                                            '${product.description}',
-                                            '${product.category.id}'
-                                            )">
+                            <button class="btn btn-warning btn-sm edit-product-btn"
+                                    data-id="${product.id}"
+                                    data-name="${fn:escapeXml(product.name)}"
+                                    data-price="${product.price}"
+                                    data-quantity="${product.quantity}"
+                                    data-image="${fn:escapeXml(product.image)}"
+                                    data-description="${fn:escapeXml(product.description)}"
+                                    data-category="${product.category.id}"
+                                    onclick="editProductFromBtn(this)">
                                 <i class="fas fa-edit"></i> Sửa
                             </button>
                             <a href="products?action=delete&id=${product.id}" class="btn btn-danger btn-sm"
@@ -80,15 +77,17 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
-<%--                <form id="productForm" method="post" action="products">--%>
-                <form id="productForm" method="post" action="${pageContext.request.contextPath}/admin?view=products">
+                <%--                <form id="productForm" method="post" action="products">--%>
+                <form id="productForm" method="post" action="${pageContext.request.contextPath}/products">
+                    <input type="hidden" name="id" id="productId">
+                    <input type="hidden" name="action" id="productAction">
+
                     <div class="modal-body">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalTitle">Thêm sản phẩm</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-                        <input type="hidden" name="id" id="productId">
                         <div class="mb-3">
                             <label for="productName" class="form-label">Tên sản phẩm</label>
                             <input id="productName" type="text" class="form-control" name="name" required>
@@ -126,7 +125,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-success">Lưu</button>
+                        <button type="submit" class="btn btn-success" id="submitBtn">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -169,25 +168,37 @@
 </div>
 
 <script>
-    function editProduct(id, name, price, quantity, image, description, categoryId) {
+    function getProductModalInstance() {
+        const el = document.getElementById('productModal');
+        return bootstrap.Modal.getOrCreateInstance(el);
+    }
+
+    function editProductFromBtn(btn) {
+        // Read dataset safely (browser auto-decodes entities)
+        const ds = btn.dataset;
+
         document.getElementById('modalTitle').innerText = "Cập nhật sản phẩm";
         document.getElementById('submitBtn').innerText = "Cập nhật";
         document.getElementById('productAction').value = 'update';
 
-        document.getElementById('productId').value = id;
-        document.getElementById('productName').value = name;
-        document.getElementById('productPrice').value = price;
-        document.getElementById('productQuantity').value = quantity;
-        document.getElementById('productImage').value = image;
-        document.getElementById('productDescription').value = description;
-        document.getElementById('productCategoryId').value = categoryId;
-        // document.getElementById('productModalLabel').innerText = 'Cập nhật sản phẩm';
+        document.getElementById('productId').value = ds.id || '';
+        document.getElementById('productName').value = ds.name || '';
+        document.getElementById('productPrice').value = ds.price || '';
+        document.getElementById('productQuantity').value = ds.quantity || '';
+        document.getElementById('productImage').value = ds.image || '';
+        document.getElementById('productDescription').value = ds.description || '';
+        if (ds.category) {
+            document.getElementById('productCategoryId').value = ds.category;
+        }
+
+        // show modal AFTER form is filled
+        getProductModalInstance().show();
     }
+
 
     function clearProductForm() {
         document.getElementById('modalTitle').innerText = "Thêm sản phẩm";
         document.getElementById('submitBtn').innerText = "Thêm mới";
-        document.getElementById('productId').value = "";
         document.getElementById('productAction').value = 'create';
 
         document.getElementById('productId').value = '';

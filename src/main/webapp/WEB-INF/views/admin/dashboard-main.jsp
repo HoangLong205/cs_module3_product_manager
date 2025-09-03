@@ -44,7 +44,7 @@
         <div class="col-md-6 col-lg-3">
             <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-muted">Pending</h5>
+                    <h5 class="card-title text-warning">Chờ xử lý</h5>
                     <h3 class="fw-bold">${orderStatusCounts['PENDING'] != null ? orderStatusCounts['PENDING'] : 0}</h3>
                 </div>
             </div>
@@ -52,15 +52,16 @@
         <div class="col-md-6 col-lg-3">
             <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-info">Confirmed</h5>
+                    <h5 class="card-title text-info">Đã xác nhận</h5>
                     <h3 class="fw-bold">${orderStatusCounts['CONFIRMED'] != null ? orderStatusCounts['CONFIRMED'] : 0}</h3>
                 </div>
+
             </div>
         </div>
         <div class="col-md-6 col-lg-3">
             <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-success">Completed</h5>
+                    <h5 class="card-title text-success">Hoàn thành</h5>
                     <h3 class="fw-bold">${orderStatusCounts['COMPLETED'] != null ? orderStatusCounts['COMPLETED'] : 0}</h3>
                 </div>
             </div>
@@ -68,7 +69,7 @@
         <div class="col-md-6 col-lg-3">
             <div class="card text-center shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-danger">Cancelled</h5>
+                    <h5 class="card-title text-danger">Đã hủy</h5>
                     <h3 class="fw-bold">${orderStatusCounts['CANCELLED'] != null ? orderStatusCounts['CANCELLED'] : 0}</h3>
                 </div>
             </div>
