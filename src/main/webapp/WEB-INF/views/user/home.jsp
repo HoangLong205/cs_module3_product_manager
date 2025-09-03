@@ -27,7 +27,8 @@
                                         <img src="${p.image}" class="card-img-top object-fit-cover" alt="${p.name}">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="${ctx}/images/${p.image}" class="card-img-top object-fit-cover" alt="${p.name}">
+                                        <img src="${ctx}/images/${p.image}" class="card-img-top object-fit-cover"
+                                             alt="${p.name}">
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -49,7 +50,8 @@
                                     </form>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="btn btn-secondary w-100" type="button" disabled>Hết hàng — Liên hệ</button>
+                                    <button class="btn btn-secondary w-100" type="button" disabled>Hết hàng — Liên hệ
+                                    </button>
                                 </c:otherwise>
                             </c:choose>
                         </div>

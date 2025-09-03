@@ -38,11 +38,11 @@
                         <button class="btn btn-sm btn-info view-order-detail" data-id="${order.id}">
                             <i class="fas fa-eye"></i> Xem chi tiết
                         </button>
-                        <a href="admin?view=deleteOrder&id=${order.id}"
-                           onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?');"
-                           class="btn btn-sm btn-danger">
-                            <i class="fas fa-trash-alt"></i> Xóa
-                        </a>
+<%--                        <a href="admin?view=deleteOrder&id=${order.id}"--%>
+<%--                           onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?');"--%>
+<%--                           class="btn btn-sm btn-danger">--%>
+<%--                            <i class="fas fa-trash-alt"></i> Xóa--%>
+<%--                        </a>--%>
                     </td>
                 </tr>
             </c:forEach>
