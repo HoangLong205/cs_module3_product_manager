@@ -42,7 +42,8 @@ public class ProductController extends HttpServlet {
                 int idDelete = Integer.parseInt(request.getParameter("id"));
                 System.out.println("🗑 Xóa product ID = " + idDelete);
                 productDAO.deleteProduct(idDelete);
-                break;
+                response.sendRedirect(request.getContextPath() + "/admin?view=products");
+                return;
             case "search":
                 String keyword = request.getParameter("keyword");
                 String field = request.getParameter("field");
@@ -50,6 +51,10 @@ public class ProductController extends HttpServlet {
                         + URLEncoder.encode(keyword, "UTF-8")
                         + "&field=" + URLEncoder.encode(field, "UTF-8"));
                 return;
+            case "list":
+            default: {
+                response.sendRedirect(request.getContextPath() + "/admin?view=products");
+            }
         }
 
         response.sendRedirect("admin?view=products");
@@ -59,6 +64,8 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        String action = request.getParameter("action");
+
         int categoryId = Integer.parseInt(request.getParameter("category_id"));
         Category category = categoryDAO.getByIdCategory(categoryId);
 
@@ -71,15 +78,24 @@ public class ProductController extends HttpServlet {
         product.setDescription(request.getParameter("description"));
         product.setCategory(category);
 
-        if (idStr == null || idStr.isEmpty()) {
+//        if (idStr == null || idStr.isEmpty()) {
+//            productDAO.insertProduct(product);
+//            System.out.println("Thêm sản phẩm thành công!");
+//        } else {
+//            product.setId(Integer.parseInt(idStr));
+//            productDAO.updateProduct(product);
+//            System.out.println("Cập nhật sản phẩm thành công!");
+//        }
+        if ("create".equals(action)) {
             productDAO.insertProduct(product);
-            System.out.println("Thêm sản phẩm thành công!");
-        } else {
+            System.out.println("➕ Thêm sản phẩm thành công!");
+        } else if ("update".equals(action) && idStr != null && !idStr.isEmpty()) {
             product.setId(Integer.parseInt(idStr));
             productDAO.updateProduct(product);
-            System.out.println("Cập nhật sản phẩm thành công!");
+            System.out.println("🔄 Cập nhật sản phẩm thành công!");
         }
 
-        response.sendRedirect("admin?view=products");
+//        response.sendRedirect("admin?view=products");
+        response.sendRedirect(request.getContextPath() + "/admin?view=products");
     }
 }

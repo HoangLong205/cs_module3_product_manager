@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.logging.Logger;
 
 @WebServlet("/categories")
@@ -36,14 +37,21 @@ public class CategoryController extends HttpServlet {
                 int idDelete = Integer.parseInt(request.getParameter("id"));
                 System.out.println("🗑 Xóa category ID = " + idDelete);
                 dao.deleteCategory(idDelete);
-                break;
+                response.sendRedirect(request.getContextPath() + "/admin?view=categories");
+                return;
             case "search":
                 String keyword = request.getParameter("name");
-                response.sendRedirect("admin?view=categories&search=" + URLEncoder.encode(keyword, "UTF-8"));
+//                response.sendRedirect("admin?view=categories&search=" + URLEncoder.encode(keyword, "UTF-8"));
+                response.sendRedirect(request.getContextPath() + "/admin?view=categories&search="
+                        + URLEncoder.encode(keyword, "UTF-8"));
                 return;
+            case "list":
+            default: {
+                response.sendRedirect(request.getContextPath() + "/admin?view=categories");
+            }
         }
 
-        response.sendRedirect("admin?view=categories");
+//        response.sendRedirect("admin?view=categories");
     }
 
     @Override
@@ -60,6 +68,7 @@ public class CategoryController extends HttpServlet {
             dao.updateCategory(new Category(Integer.parseInt(id), name));
         }
 
-        response.sendRedirect("admin?view=categories");
+//        response.sendRedirect("admin?view=categories");
+        response.sendRedirect(request.getContextPath() + "/admin?view=categories");
     }
 }

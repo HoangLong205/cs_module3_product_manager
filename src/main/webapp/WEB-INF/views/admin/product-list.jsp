@@ -79,12 +79,15 @@
     <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="productModalLabel">Thêm sản phẩm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="productForm" method="post" action="products">
+
+<%--                <form id="productForm" method="post" action="products">--%>
+                <form id="productForm" method="post" action="${pageContext.request.contextPath}/admin?view=products">
                     <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Thêm sản phẩm</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
                         <input type="hidden" name="id" id="productId">
                         <div class="mb-3">
                             <label for="productName" class="form-label">Tên sản phẩm</label>
@@ -167,6 +170,10 @@
 
 <script>
     function editProduct(id, name, price, quantity, image, description, categoryId) {
+        document.getElementById('modalTitle').innerText = "Cập nhật sản phẩm";
+        document.getElementById('submitBtn').innerText = "Cập nhật";
+        document.getElementById('productAction').value = 'update';
+
         document.getElementById('productId').value = id;
         document.getElementById('productName').value = name;
         document.getElementById('productPrice').value = price;
@@ -174,10 +181,15 @@
         document.getElementById('productImage').value = image;
         document.getElementById('productDescription').value = description;
         document.getElementById('productCategoryId').value = categoryId;
-        document.getElementById('productModalLabel').innerText = 'Cập nhật sản phẩm';
+        // document.getElementById('productModalLabel').innerText = 'Cập nhật sản phẩm';
     }
 
     function clearProductForm() {
+        document.getElementById('modalTitle').innerText = "Thêm sản phẩm";
+        document.getElementById('submitBtn').innerText = "Thêm mới";
+        document.getElementById('productId').value = "";
+        document.getElementById('productAction').value = 'create';
+
         document.getElementById('productId').value = '';
         document.getElementById('productName').value = '';
         document.getElementById('productPrice').value = '';
@@ -185,7 +197,7 @@
         document.getElementById('productImage').value = '';
         document.getElementById('productDescription').value = '';
         document.getElementById('productCategoryId').selectedIndex = 0;
-        document.getElementById('productModalLabel').innerText = 'Thêm sản phẩm';
+        // document.getElementById('productModalLabel').innerText = 'Thêm sản phẩm';
     }
 
     document.addEventListener('DOMContentLoaded', function () {

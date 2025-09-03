@@ -7,6 +7,7 @@ import java.util.List;
 public class Order {
     private int id;
     private User user;
+    private int userId;
     private Timestamp orderDate;
     private double total;
     private OrderStatus status;
@@ -56,6 +57,14 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Timestamp getOrderDate() {

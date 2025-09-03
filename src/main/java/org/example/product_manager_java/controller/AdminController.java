@@ -44,7 +44,8 @@ public class AdminController extends HttpServlet {
             try {
                 int productId = Integer.parseInt(request.getParameter("id"));
                 request.setAttribute("product", productDAO.getByIdProduct(productId));
-                request.getRequestDispatcher("/WEB-INF/product-detail.jsp").forward(request, response);
+//                request.getRequestDispatcher("/WEB-INF/product-detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/admin/product-detail.jsp").forward(request, response);
                 return;
             } catch (NumberFormatException e) {
                 request.setAttribute("error", "ID sản phẩm không hợp lệ.");
@@ -60,7 +61,8 @@ public class AdminController extends HttpServlet {
 
                 request.setAttribute("order", order);
                 request.setAttribute("items", orderItems);
-                request.getRequestDispatcher("/WEB-INF/orderDetail.jsp").forward(request, response);
+//                request.getRequestDispatcher("/WEB-INF/orderDetail.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/admin/orderDetail.jsp").forward(request, response);
                 return;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -78,25 +80,29 @@ public class AdminController extends HttpServlet {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                pageContent = "/WEB-INF/user-list.jsp";
+//                pageContent = "/WEB-INF/user-list.jsp";
+                pageContent = "/WEB-INF/views/admin/user-list.jsp";
                 title = "Quản lý người dùng";
                 break;
             case "products":
                 handleProducts(request);
                 request.setAttribute("categories", categoryDAO.getAllCategory());
-                pageContent = "/WEB-INF/product-list.jsp";
+//                pageContent = "/WEB-INF/product-list.jsp";
+                pageContent = "/WEB-INF/views/admin/product-list.jsp";
                 title = "Quản lý sản phẩm";
                 break;
             case "categories":
                 handleCategories(request);
-                pageContent = "/WEB-INF/category-list.jsp";
+//                pageContent = "/WEB-INF/category-list.jsp";
+                pageContent = "/WEB-INF/views/admin/category-list.jsp";
                 title = "Quản lý loại sản phẩm";
                 break;
             case "orders":
                 try {
                     List<Order> orders = orderDAO.getAllOrders();
                     request.setAttribute("orders", orders);
-                    pageContent = "/WEB-INF/order-list.jsp";
+//                    pageContent = "/WEB-INF/order-list.jsp";
+                    pageContent = "/WEB-INF/views/admin/order-list.jsp";
                     title = "Quản lý đơn hàng";
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -119,7 +125,8 @@ public class AdminController extends HttpServlet {
                 return;
             default:
                 handleDashboard(request);
-                pageContent = "/WEB-INF/dashboard-main.jsp";
+//                pageContent = "/WEB-INF/dashboard-main.jsp";
+                pageContent = "/WEB-INF/views/admin/dashboard-main.jsp";
                 title = "Trang tổng quan";
                 break;
         }
@@ -127,7 +134,8 @@ public class AdminController extends HttpServlet {
         request.setAttribute("pageContent", pageContent);
         request.setAttribute("title", title);
 
-        request.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+//        request.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp").forward(request, response);
     }
 
     private void handleUsers(HttpServletRequest request) throws SQLException {
