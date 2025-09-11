@@ -28,4 +28,4 @@ Admin có thể quản lý sản phẩm với các chức năng CRUD (Create –
 2. Import vào IDE (Eclipse / IntelliJ).
 3. Tạo database MySQL, import file db.sql.
 4. Chỉnh DBConnection.java cho đúng config (user/password).
-5. Chạy server (Tomcat) → truy cập http://localhost:8080/product_manager.
+5. Chạy server (Tomcat)
